@@ -144,6 +144,8 @@ npm run build
 
 The generated JSON data is intentionally human-inspectable, but it is application state. Stop the API before manually editing it. Never place passwords, cookies, API tokens, authentication headers, or provider credentials in any collection.
 
-## Author
+---
 
-**Atharva A. Deshmukh**
+## 🚀 Author:
+
+## Atharva A. Deshmukh
