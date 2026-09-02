@@ -16,6 +16,12 @@ The repository contains a Next.js/TypeScript interface and a FastAPI/Pydantic se
 - Provider-neutral AI and Acunetix adapters with explicit disconnected states and realistic mock behavior
 - Executive, technical, recon, full-scan, findings-only, and comparison reports in HTML, JSON, CSV, and PDF-compatible form
 - Atomic, per-file-locked JSON persistence behind repository interfaces that can later be replaced by PostgreSQL
+---
+
+## Live Preview: https://vulnexa-atharva.vercel.app/
+
+---
+
 
 ## Quick start
 
