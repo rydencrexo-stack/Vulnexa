@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/learn/academy-header.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAN Academy — XML External Entity (XXE) Injection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F6F7F9;
+      --bg-card: #FFFFFF;
+      --border-color: #E3E6EA;
+      --border-light: #EEF2F6;
+      --navy-dark: #0F172A;
+      --navy-header: #111827;
+      --navy-code: #090E17;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --accent-green: #22C55E;
+      --accent-cyan: #0EA5E9;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    .top-nav-bar {
+      background: var(--navy-header);
+      color: #FFFFFF;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-brand-link { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.05rem; color: #FFFFFF; }
+    .brand-dot { width: 24px; height: 24px; background: linear-gradient(135deg, #0EA5E9, #22C55E); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #0F172A; }
+    .nav-back-btn { color: #94A3B8; font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; }
+    .nav-back-btn:hover { color: #FFFFFF; }
+
+    .room-hero-section {
+      background: #0E1524;
+      color: #FFFFFF;
+      padding: 2.25rem 2rem 1.75rem;
+    }
+    .hero-container { max-width: 1200px; margin: 0 auto; }
+    .breadcrumb-row { font-size: 0.82rem; color: #94A3B8; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .breadcrumb-row a { color: #94A3B8; }
+    .breadcrumb-row a:hover { color: #FFFFFF; }
+    .room-main-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.75rem; }
+    .room-subtitle-text { font-size: 0.95rem; color: #CBD5E1; margin-bottom: 1rem; }
+    .room-header-meta-row { display: flex; align-items: center; gap: 1.25rem; font-size: 0.85rem; color: #94A3B8; margin-bottom: 1.25rem; }
+    .meta-stat-highlight { color: #FFFFFF; font-weight: 600; }
+    .room-action-toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .tool-btn {
+      background: #1E293B; color: #FFFFFF; border: 1px solid #334155; padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-md); font-size: 0.84rem; font-weight: 600; cursor: pointer;
+    }
+    .tool-btn.btn-share { background: #84CC16; color: #0F172A; border: none; font-weight: 700; }
+
+    .room-progress-banner {
+      background: #22C55E; color: #052E16; font-weight: 700; font-size: 0.85rem; text-align: center; padding: 0.35rem 1rem;
+    }
+
+    .room-body-container {
+      max-width: 1200px; margin: 1.75rem auto 4rem; padding: 0 1.5rem;
+      display: grid; grid-template-columns: 300px 1fr; gap: 1.75rem; align-items: start;
+    }
+
+    .curriculum-sidebar {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+      padding: 1.25rem; box-shadow: var(--shadow-sm); position: sticky; top: 1.5rem;
+    }
+    .curriculum-title { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.85rem; }
+    .task-nav-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .task-nav-btn {
+      background: transparent; border: 1px solid transparent; border-radius: var(--radius-md);
+      padding: 0.65rem 0.85rem; display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.88rem; font-weight: 600; color: var(--text-main); cursor: pointer; width: 100%; text-align: left;
+    }
+    .task-nav-btn:hover { background: #F1F5F9; }
+    .task-nav-btn.active { background: #0F172A; color: #FFFFFF; }
+    .task-nav-left { display: flex; align-items: center; gap: 0.5rem; }
+    .task-check-circle {
+      width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 0.75rem; font-weight: 800;
+    }
+    .task-check-circle.completed { background: #22C55E; color: #FFFFFF; }
+    .task-check-circle.pending { border: 1.5px solid #94A3B8; color: transparent; }
+    .task-xp-tag {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      color: #D97706; background: #FEF3C7; padding: 1px 6px; border-radius: 4px;
+    }
+    .task-nav-btn.active .task-xp-tag { background: rgba(245, 158, 11, 0.2); color: #FBBF24; }
+
+    .task-content-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+      padding: 2.25rem; box-shadow: var(--shadow-sm); min-height: 520px;
+    }
+    .task-header-pill {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; color: #0284C7; text-transform: uppercase; margin-bottom: 0.35rem;
+    }
+    .task-title { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.25rem; }
+    .task-body-prose { font-size: 0.95rem; line-height: 1.7; color: #334155; max-width: 720px; }
+    .task-body-prose p { margin-bottom: 1.15rem; }
+    .task-body-prose ul { margin-left: 1.5rem; margin-bottom: 1.15rem; }
+    .task-body-prose li { margin-bottom: 0.4rem; }
+
+    .callout-box {
+      background: #F0FDF4; border-left: 4px solid var(--accent-green); border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 1rem 1.25rem; margin: 1.5rem 0;
+    }
+    .callout-heading { font-weight: 700; font-size: 0.82rem; color: #166534; text-transform: uppercase; margin-bottom: 0.3rem; }
+
+    .code-viewer-box {
+      background: var(--navy-code); border: 1px solid #334155; border-radius: var(--radius-md); overflow: hidden; margin: 1.5rem 0;
+    }
+    .code-viewer-header {
+      background: #0F172A; padding: 0.5rem 1rem; font-size: 0.78rem; color: #94A3B8;
+      display: flex; justify-content: space-between; border-bottom: 1px solid #1E293B; font-family: var(--font-mono);
+    }
+    .code-lines-scroll { padding: 0.5rem 0; }
+    .code-line {
+      display: flex; padding: 0.25rem 1rem; font-family: var(--font-mono); font-size: 0.85rem; cursor: pointer; transition: background 0.15s;
+    }
+    .code-line:hover { background: rgba(255, 255, 255, 0.05); }
+    .code-line.selected { background: rgba(14, 165, 233, 0.2); border-left: 3px solid #0EA5E9; }
+    .code-line.vulnerable { background: rgba(239, 68, 68, 0.25); border-left: 3px solid #EF4444; }
+    .code-num { width: 32px; color: #64748B; user-select: none; }
+    .code-text { color: #E2E8F0; white-space: pre; }
+
+    .http-inspector {
+      background: var(--navy-code); border: 1px solid #334155; border-radius: var(--radius-md); overflow: hidden; margin: 1.5rem 0;
+    }
+    .http-tabs { display: flex; background: #0F172A; border-bottom: 1px solid #1E293B; }
+    .http-tab {
+      padding: 0.5rem 1.25rem; font-size: 0.8rem; font-weight: 700; color: #94A3B8;
+      cursor: pointer; background: transparent; border: none; border-bottom: 2px solid transparent;
+    }
+    .http-tab.active { color: #38BDF8; border-bottom-color: #38BDF8; background: rgba(56, 189, 248, 0.08); }
+    .http-body {
+      padding: 1.25rem; font-family: var(--font-mono); font-size: 0.85rem; color: #E2E8F0; line-height: 1.5; white-space: pre; overflow-x: auto;
+    }
+
+    .interactive-box {
+      background: #F8FAFC; border: 1px solid var(--border-color); border-radius: var(--radius-md);
+      padding: 1.5rem; margin-top: 1.75rem; max-width: 720px;
+    }
+    .question-prompt { font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-bottom: 1rem; }
+    .options-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .option-card {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+      background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md);
+      cursor: pointer; color: var(--text-main); font-size: 0.9rem;
+    }
+    .option-card:hover { border-color: #94A3B8; background: #F8FAFC; }
+    .option-card.selected { border-color: #0EA5E9; background: #F0F9FF; font-weight: 600; }
+    .radio-circle {
+      width: 18px; height: 18px; border-radius: 50%; border: 2px solid #CBD5E1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .option-card.selected .radio-circle { border-color: #0EA5E9; }
+    .option-card.selected .radio-circle::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #0EA5E9; }
+
+    .btn-submit-task {
+      background: #22C55E; color: #FFFFFF; border: none; padding: 0.55rem 1.25rem;
+      border-radius: var(--radius-md); font-size: 0.88rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-submit-task:hover { background: #16A34A; }
+
+    .feedback-alert { padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.88rem; margin-bottom: 1rem; display: none; }
+    .feedback-alert.success { background: #DCFCE7; border: 1px solid #BBF7D0; color: #166534; display: block; }
+    .feedback-alert.error { background: #FEE2E2; border: 1px solid #FECACA; color: #991B1B; display: block; }
+
+    .completion-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center; z-index: 200; padding: 1.5rem;
+    }
+    .completion-card {
+      background: #FFFFFF; border-radius: var(--radius-lg); max-width: 480px; width: 100%; padding: 2.25rem; text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav-bar">
+    <a href="../../index.html" class="nav-brand-link">
+      <div class="brand-dot">P</div>
+      <span>PAN Academy</span>
+    </a>
+    <a href="../index.html" class="nav-back-btn">
+      ← Return to Vulnerability Library
+    </a>
+  </header>
+
+  <section class="room-hero-section">
+    <div class="hero-container">
+      <div class="breadcrumb-row">
+        <a href="../../index.html">Academy</a> ›
+        <a href="../index.html">Vulnerabilities</a> ›
+        <span>XXE Injection</span>
+      </div>
+      <h1 class="room-main-title">
+        <span>📄</span> XML External Entity (XXE) Injection
+      </h1>
+      <p class="room-subtitle-text">
+        Understand how weakly configured XML parsers process external entity declarations (SYSTEM entities), leading to local file disclosure (/etc/passwd), SSRF, and out-of-band exfiltration.
+      </p>
+
+      <div class="room-header-meta-row">
+        <span>📊 <strong class="meta-stat-highlight">Intermediate</strong></span>
+        <span>⏱ <strong class="meta-stat-highlight">35 min</strong></span>
+        <span>🏆 <strong class="meta-stat-highlight">+400 XP</strong></span>
+        <span>👥 <strong class="meta-stat-highlight">4,890 enrolled</strong></span>
+      </div>
+
+      <div class="room-action-toolbar">
+        <button class="tool-btn btn-share" onclick="alert('Achievement link copied!')">↗ Share</button>
+        <button class="tool-btn" onclick="alert('Defense: Disable DTDs (disallow-doctype-decl) completely in XML parsers.')">Help ▾</button>
+        <button class="tool-btn" onclick="alert('Room saved!')">🔖 Save Room</button>
+        <button class="tool-btn" onclick="openResetModal()">⚙ Options / Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="room-progress-banner" id="room-prog-banner">
+    Room completed: <span id="banner-prog-text">0%</span>
+  </div>
+
+  <main class="room-body-container">
+    <aside class="curriculum-sidebar">
+      <div class="curriculum-title">Curriculum Tasks</div>
+      <div class="task-nav-list">
+        <button class="task-nav-btn active" onclick="switchTask(0)">
+          <div class="task-nav-left">
+            <span class="task-check-circle" id="circle-task-0">1</span>
+            <span>Task 1 · What is XXE?</span>
+          </div>
+          <span class="task-xp-tag">+50 XP</span>
+        </button>
+
+        <button class="task-nav-btn" onclick="switchTask(1)">
+          <div class="task-nav-left">
+            <span class="task-check-circle pending" id="circle-task-1">2</span>
+            <span>Task 2 · DTDs & SYSTEM Entities</span>
+          </div>
+          <span class="task-xp-tag">+50 XP</span>
+        </button>
+
+        <button class="task-nav-btn" onclick="switchTask(2)">
+          <div class="task-nav-left">
+            <span class="task-check-circle pending" id="circle-task-2">3</span>
+            <span>Task 3 · Code Analysis</span>
+          </div>
+          <span class="task-xp-tag">+75 XP</span>
+        </button>
+
+        <button class="task-nav-btn" onclick="switchTask(3)">
+          <div class="task-nav-left">
+            <span class="task-check-circle pending" id="circle-task-3">4</span>
+            <span>Task 4 · Telemetry Inspection</span>
+          </div>
+          <span class="task-xp-tag">+75 XP</span>
+        </button>
+
+        <button class="task-nav-btn" onclick="switchTask(4)">
+          <div class="task-nav-left">
+            <span class="task-check-circle pending" id="circle-task-4">5</span>
+            <span>Task 5 · Disabling DTD Processing</span>
+          </div>
+          <span class="task-xp-tag">+75 XP</span>
+        </button>
+
+        <button class="task-nav-btn" onclick="switchTask(5)">
+          <div class="task-nav-left">
+            <span class="task-check-circle pending" id="circle-task-5">6</span>
+            <span>Task 6 · Knowledge Check</span>
+          </div>
+          <span class="task-xp-tag">+75 XP</span>
+        </button>
+      </div>
+    </aside>
+
+    <section class="task-content-card">
+      <!-- Task 1 -->
+      <div id="task-panel-0" class="task-pane">
+        <div class="task-header-pill">Task 01 · Vulnerability Foundations</div>
+        <h2 class="task-title">What is XML External Entity (XXE) Injection?</h2>
+        <div class="task-body-prose">
+          <p><strong>XML External Entity (XXE) Injection</strong> is a security vulnerability where an application parses user-supplied XML input that contains a reference to an external entity.</p>
+          <p>Legacy XML standards allow Document Type Definitions (DTDs) to declare custom entities that read local system files (e.g. <code>file:///etc/passwd</code>) or trigger server-side network requests.</p>
+          <div class="callout-box">
+            <div class="callout-heading">Root Cause</div>
+            <p>XXE vulnerabilities exist because XML parsers by default have entity expansion and DTD processing enabled, even when modern web applications only need basic data exchange.</p>
+          </div>
+        </div>
+        <div class="interactive-box">
+          <button class="btn-submit-task" id="btn-complete-task-0" onclick="completeReadingTask(0, 50)">
+            Mark Task Complete & Earn +50 XP
+          </button>
+        </div>
+      </div>
+
+      <!-- Task 2 -->
+      <div id="task-panel-1" class="task-pane" style="display: none;">
+        <div class="task-header-pill">Task 02 · XML DTD Mechanics</div>
+        <h2 class="task-title">How SYSTEM Entities Work</h2>
+        <div class="task-body-prose">
+          <p>An XML external entity is defined inside the DTD header using the <code>SYSTEM</code> keyword:</p>
+          <pre style="background:var(--navy-code); color:#E2E8F0; padding:0.75rem; border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:0.85rem; margin:1rem 0;">&lt;!DOCTYPE order [
+  &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;
+]&gt;
+&lt;order&gt;
+  &lt;item&gt;&amp;xxe;&lt;/item&gt;
+&lt;/order&gt;</pre>
+          <p>When parsed, the XML engine reads the contents of <code>/etc/passwd</code> and substitutes it into the <code>&lt;item&gt;</code> element.</p>
+        </div>
+        <div class="interactive-box">
+          <div class="question-prompt">Which keyword in an XML DOCTYPE declaration instructs the parser to load external file URI or network resources?</div>
+          <div class="options-group">
+            <div class="option-card" onclick="selectOption(1, 0, this)">
+              <div class="radio-circle"></div>
+              <span>SYSTEM</span>
+            </div>
+            <div class="option-card" onclick="selectOption(1, 1, this)">
+              <div class="radio-circle"></div>
+              <span>IMPORT</span>
+            </div>
+            <div class="option-card" onclick="selectOption(1, 2, this)">
+              <div class="radio-circle"></div>
+              <span>EXTERNAL_FETCH</span>
+            </div>
+          </div>
+          <div class="feedback-alert" id="feedback-task-1"></div>
+          <button class="btn-submit-task" onclick="submitMultipleChoice(1, 0, 50, 'The SYSTEM keyword defines external entity references in XML DTD specifications.')">
+            Check Answer
+          </button>
+        </div>
+      </div>
+
+      <!-- Task 3 -->
+      <div id="task-panel-2" class="task-pane" style="display: none;">
+        <div class="task-header-pill">Task 03 · Code Analysis</div>
+        <h2 class="task-title">Identify Vulnerable XML Parser Configuration</h2>
+        <div class="task-body-prose">
+          <p>Review the Java XML DocumentBuilder code below. Click on the code line where the parser is initialized without disabling DTD processing:</p>
+        </div>
+
+        <div class="code-viewer-box">
+          <div class="code-viewer-header">
+            <span>XmlUploadService.java (Java / DOM Parser)</span>
+            <span>PAN Security Analyzer</span>
+          </div>
+          <div class="code-lines-scroll" id="code-lines-wrap">
+            <div class="code-line" onclick="selectCodeLine(1)"><span class="code-num">01</span><span class="code-text">public Document parseIncomingXml(InputStream xmlInput) throws Exception {</span></div>
+            <div class="code-line" onclick="selectCodeLine(2)"><span class="code-num">02</span><span class="code-text">    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</span></div>
+            <div class="code-line" onclick="selectCodeLine(3)"><span class="code-num">03</span><span class="code-text">    </span></div>
+            <div class="code-line" onclick="selectCodeLine(4)"><span class="code-num">04</span><span class="code-text">    // Vulnerable: creates parser without setting FEATURE_SECURE_PROCESSING or disabling DTDs</span></div>
+            <div class="code-line" onclick="selectCodeLine(5)"><span class="code-num">05</span><span class="code-text">    DocumentBuilder builder = factory.newDocumentBuilder();</span></div>
+            <div class="code-line" onclick="selectCodeLine(6)"><span class="code-num">06</span><span class="code-text">    </span></div>
+            <div class="code-line" onclick="selectCodeLine(7)"><span class="code-num">07</span><span class="code-text">    Document doc = builder.parse(xmlInput);</span></div>
+            <div class="code-line" onclick="selectCodeLine(8)"><span class="code-num">08</span><span class="code-text">    return doc;</span></div>
+            <div class="code-line" onclick="selectCodeLine(9)"><span class="code-num">09</span><span class="code-text">}</span></div>
+          </div>
+        </div>
+
+        <div class="interactive-box">
+          <div class="question-prompt" id="selected-line-prompt">Select the vulnerable line above and click submit.</div>
+          <div class="feedback-alert" id="feedback-task-2"></div>
+          <button class="btn-submit-task" onclick="submitLineSelection(2, 5, 75, 'Line 05 builds the parser directly without configuring factory.setFeature(&quot;http://apache.org/xml/features/disallow-doctype-decl&quot;, true).')">
+            Submit Selected Line
+          </button>
+        </div>
+      </div>
+
+      <!-- Task 4 -->
+      <div id="task-panel-3" class="task-pane" style="display: none;">
+        <div class="task-header-pill">Task 04 · Telemetry Inspection</div>
+        <h2 class="task-title">PAN Automated XXE Telemetry</h2>
+        <div class="task-body-prose">
+          <p>Inspect the HTTP request and response captured during PAN's automated XML parser test:</p>
+        </div>
+
+        <div class="http-inspector">
+          <div class="http-tabs">
+            <button class="http-tab active" id="tab-req" onclick="showHttp('req')">INJECTED XML PAYLOAD</button>
+            <button class="http-tab" id="tab-res" onclick="showHttp('res')">DISCLOSED FILE RESPONSE</button>
+          </div>
+          <div class="http-body" id="http-box">POST /api/import-xml HTTP/1.1
+Host: payroll.pan-demo.io
+Content-Type: application/xml
+
+&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM "file:///etc/hosts"&gt;]&gt;
+&lt;import&gt;&lt;data&gt;&amp;xxe;&lt;/data&gt;&lt;/import&gt;</div>
+        </div>
+
+        <div class="interactive-box">
+          <div class="question-prompt">What evidence in the response confirms that the server is vulnerable to XXE Injection?</div>
+          <div class="options-group">
+            <div class="option-card" onclick="selectOption(3, 0, this)">
+              <div class="radio-circle"></div>
+              <span>The response body reflects the internal /etc/hosts file containing localhost and internal server IP mappings.</span>
+            </div>
+            <div class="option-card" onclick="selectOption(3, 1, this)">
+              <div class="radio-circle"></div>
+              <span>The Content-Type is application/xml.</span>
+            </div>
+            <div class="option-card" onclick="selectOption(3, 2, this)">
+              <div class="radio-circle"></div>
+              <span>The HTTP response status code is 200.</span>
+            </div>
+          </div>
+          <div class="feedback-alert" id="feedback-task-3"></div>
+          <button class="btn-submit-task" onclick="submitMultipleChoice(3, 0, 75, 'The XML entity expansion echoed internal host configurations back to the client.')">
+            Check Answer
+          </button>
+        </div>
+      </div>
+
+      <!-- Task 5 -->
+      <div id="task-panel-4" class="task-pane" style="display: none;">
+        <div class="task-header-pill">Task 05 · Remediation Architecture</div>
+        <h2 class="task-title">Disabling External Entities & DTDs</h2>
+        <div class="task-body-prose">
+          <p>The standard OWASP mitigation for XXE is to disable Document Type Declarations (DTDs) completely in your XML parser configuration:</p>
+          <ul>
+            <li><code>disallow-doctype-decl = true</code></li>
+            <li><code>external-general-entities = false</code></li>
+            <li><code>external-parameter-entities = false</code></li>
+          </ul>
+        </div>
+
+        <div class="interactive-box">
+          <div class="question-prompt">What is the most effective and universal remediation control against XXE across all programming languages?</div>
+          <div class="options-group">
+            <div class="option-card" onclick="selectOption(4, 0, this)">
+              <div class="radio-circle"></div>
+              <span>Explicitly configure the XML parser to disallow DOCTYPE declarations and external entity resolution.</span>
+            </div>
+            <div class="option-card" onclick="selectOption(4, 1, this)">
+              <div class="radio-circle"></div>
+              <span>Use Base64 encoding on incoming XML payloads.</span>
+            </div>
+            <div class="option-card" onclick="selectOption(4, 2, this)">
+              <div class="radio-circle"></div>
+              <span>Only parse XML requests sent on port 443.</span>
+            </div>
+          </div>
+          <div class="feedback-alert" id="feedback-task-4"></div>
+          <button class="btn-submit-task" onclick="submitMultipleChoice(4, 0, 75, 'Disabling DTD processing removes the parser capability to fetch or expand external entities.')">
+            Check Answer
+          </button>
+        </div>
+      </div>
+
+      <!-- Task 6 -->
+      <div id="task-panel-5" class="task-pane" style="display: none;">
+        <div class="task-header-pill">Task 06 · Final Knowledge Check</div>
+        <h2 class="task-title">Module Knowledge Check</h2>
+        <div class="task-body-prose">
+          <p>Review the concepts of XML parsing, external entity resolution, and secure parser configurations.</p>
+        </div>
+        <div class="interactive-box">
+          <div class="question-prompt">What modern, lightweight data serialization format is commonly adopted as a safer alternative to XML for REST APIs?</div>
+          <div class="options-group">
+            <div class="option-card" onclick="selectOption(5, 0, this)">
+              <div class="radio-circle"></div>
+              <span>JSON (JavaScript Object Notation)</span>
+            </div>
+            <div class="option-card" onclick="selectOption(5, 1, this)">
+              <div class="radio-circle"></div>
+              <span>SOAP Envelope</span>
+            </div>
+            <div class="option-card" onclick="selectOption(5, 2, this)">
+              <div class="radio-circle"></div>
+              <span>WSDL Document</span>
+            </div>
+          </div>
+          <div class="feedback-alert" id="feedback-task-5"></div>
+          <button class="btn-submit-task" onclick="submitMultipleChoice(5, 0, 75, 'JSON lacks external entity expansion features, eliminating XXE risks by design.')">
+            Check Answer
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="completion-overlay" id="completion-modal">
+    <div class="completion-card">
+      <div style="font-size:3rem; margin-bottom:0.75rem;">🎉</div>
+      <h2 style="font-size:1.6rem; font-weight:800; color:var(--text-main); margin-bottom:0.25rem;">Room Completed!</h2>
+      <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.25rem;">You have successfully completed XML External Entity (XXE) Injection.</p>
+      <div style="background:#DCFCE7; color:#166534; font-weight:700; font-family:var(--font-mono); padding:0.5rem 1rem; border-radius:var(--radius-full); display:inline-block; margin-bottom:1.5rem;">
+        +400 Total XP Awarded
+      </div>
+      <div style="display:flex; gap:0.75rem; justify-content:center;">
+        <a href="../../index.html" class="tool-btn">Academy Home</a>
+        <a href="../file-upload/index.html" class="btn-submit-task">Next Room (File Upload) →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="completion-overlay" id="reset-modal">
+    <div class="completion-card" style="text-align: left;">
+      <h3 style="font-size:1.25rem; font-weight:800; color:var(--text-main); margin-bottom:0.5rem;">Reset Room Progress?</h3>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1.25rem;">
+        Your progress for XML External Entity (XXE) Injection will be reset.
+      </p>
+      <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+        <button class="tool-btn" onclick="closeResetModal()">Cancel</button>
+        <button class="btn-submit-task" style="background:#EF4444;" onclick="confirmResetRoom()">Confirm Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ROOM_ID = "xxe";
+    const TOTAL_TASKS = 6;
+    let selectedOptions = {};
+    let selectedLine = null;
+
+    const reqText = `POST /api/import-xml HTTP/1.1
+Host: payroll.pan-demo.io
+Content-Type: application/xml
+
+<!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/hosts">]>
+<import><data>&xxe;</data></import>`;
+
+    const resText = `HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "imported",
+  "data": "127.0.0.1 localhost\\n10.0.4.15 payroll-db.pan-internal.local\\n10.0.4.20 redis.pan-internal.local"
+}`;
+
+    function showHttp(type) {
+      document.getElementById("tab-req").classList.toggle("active", type === 'req');
+      document.getElementById("tab-res").classList.toggle("active", type === 'res');
+      document.getElementById("http-box").textContent = type === 'req' ? reqText : resText;
+    }
+
+    function selectCodeLine(lineNum) {
+      selectedLine = lineNum;
+      document.querySelectorAll(".code-line").forEach((l, idx) => {
+        l.classList.toggle("selected", idx + 1 === lineNum);
+      });
+      document.getElementById("selected-line-prompt").textContent = `Selected Line: 0${lineNum}. Click Submit below.`;
+    }
+
+    function getProgress() {
+      try {
+        const raw = localStorage.getItem("panAcademyProgress");
+        if (!raw) return { xp: 0, completedRooms: [], completedTasks: {}, earnedXP: {}, earnedRoomsXP: [] };
+        return JSON.parse(raw);
+      } catch (e) {
+        return { xp: 0, completedRooms: [], completedTasks: {}, earnedXP: {}, earnedRoomsXP: [] };
+      }
+    }
+
+    function saveProgress(state) {
+      localStorage.setItem("panAcademyProgress", JSON.stringify(state));
+      updateUI();
+    }
+
+    function isTaskDone(taskIdx) {
+      const state = getProgress();
+      return state.completedTasks && state.completedTasks[ROOM_ID] && state.completedTasks[ROOM_ID].includes(taskIdx);
+    }
+
+    function markTaskDone(taskIdx, xp) {
+      const state = getProgress();
+      if (!state.completedTasks) state.completedTasks = {};
+      if (!state.completedTasks[ROOM_ID]) state.completedTasks[ROOM_ID] = [];
+      if (!state.earnedXP) state.earnedXP = {};
+      if (!state.earnedXP[ROOM_ID]) state.earnedXP[ROOM_ID] = [];
+      if (!state.completedRooms) state.completedRooms = [];
+      if (!state.earnedRoomsXP) state.earnedRoomsXP = [];
+
+      if (!state.completedTasks[ROOM_ID].includes(taskIdx)) {
+        state.completedTasks[ROOM_ID].push(taskIdx);
+      }
+
+      if (!state.earnedXP[ROOM_ID].includes(`task-${taskIdx}`)) {
+        state.earnedXP[ROOM_ID].push(`task-${taskIdx}`);
+        state.xp = (state.xp || 0) + xp;
+      }
+
+      if (state.completedTasks[ROOM_ID].length === TOTAL_TASKS) {
+        if (!state.completedRooms.includes(ROOM_ID)) {
+          state.completedRooms.push(ROOM_ID);
+        }
+        if (!state.earnedRoomsXP.includes(ROOM_ID)) {
+          state.earnedRoomsXP.push(ROOM_ID);
+          state.xp = (state.xp || 0) + 125;
+        }
+        document.getElementById("completion-modal").style.display = "flex";
+      }
+      saveProgress(state);
+    }
+
+    function updateUI() {
+      const state = getProgress();
+      const completedCount = state.completedTasks[ROOM_ID] ? state.completedTasks[ROOM_ID].length : 0;
+      const percent = Math.round((completedCount / TOTAL_TASKS) * 100);
+
+      document.getElementById("banner-prog-text").textContent = `${percent}%`;
+
+      for (let i = 0; i < TOTAL_TASKS; i++) {
+        const circleEl = document.getElementById(`circle-task-${i}`);
+        if (circleEl) {
+          if (isTaskDone(i)) {
+            circleEl.textContent = "✓";
+            circleEl.className = "task-check-circle completed";
+          } else {
+            circleEl.textContent = i + 1;
+            circleEl.className = "task-check-circle pending";
+          }
+        }
+      }
+    }
+
+    function switchTask(idx) {
+      document.querySelectorAll(".task-pane").forEach(p => p.style.display = "none");
+      document.querySelectorAll(".task-nav-btn").forEach(b => b.classList.remove("active"));
+      document.getElementById(`task-panel-${idx}`).style.display = "block";
+      document.querySelectorAll(".task-nav-btn")[idx].classList.add("active");
+    }
+
+    function selectOption(taskIdx, optIdx, el) {
+      if (isTaskDone(taskIdx)) return;
+      selectedOptions[taskIdx] = optIdx;
+      el.parentNode.querySelectorAll(".option-card").forEach(c => c.classList.remove("selected"));
+      el.classList.add("selected");
+    }
+
+    function completeReadingTask(taskIdx, xp) {
+      markTaskDone(taskIdx, xp);
+      const btn = document.getElementById(`btn-complete-task-${taskIdx}`);
+      btn.textContent = "✓ Completed";
+      btn.style.background = "#E2E8F0";
+      btn.style.color = "#166534";
+    }
+
+    function submitLineSelection(taskIdx, correctLine, xp, explanation) {
+      const fb = document.getElementById(`feedback-task-${taskIdx}`);
+      if (isTaskDone(taskIdx)) {
+        fb.className = "feedback-alert success";
+        fb.innerHTML = `<strong>✓ Correct!</strong><br>${explanation}`;
+        return;
+      }
+      if (!selectedLine) {
+        fb.className = "feedback-alert error";
+        fb.textContent = "Please click on a code line first.";
+        return;
+      }
+      if (selectedLine === correctLine) {
+        fb.className = "feedback-alert success";
+        fb.innerHTML = `<strong>✓ Correct!</strong> +${xp} XP.<br>${explanation}`;
+        document.querySelectorAll(".code-line")[correctLine - 1].classList.add("vulnerable");
+        markTaskDone(taskIdx, xp);
+      } else {
+        fb.className = "feedback-alert error";
+        fb.textContent = "✕ Incorrect line. Examine where the DocumentBuilder is created.";
+      }
+    }
+
+    function submitMultipleChoice(taskIdx, correctIdx, xp, explanation) {
+      const fb = document.getElementById(`feedback-task-${taskIdx}`);
+      if (isTaskDone(taskIdx)) {
+        fb.className = "feedback-alert success";
+        fb.innerHTML = `<strong>✓ Correct!</strong><br>${explanation}`;
+        return;
+      }
+      if (selectedOptions[taskIdx] === undefined) {
+        fb.className = "feedback-alert error";
+        fb.textContent = "Please select an option first.";
+        return;
+      }
+      if (selectedOptions[taskIdx] === correctIdx) {
+        fb.className = "feedback-alert success";
+        fb.innerHTML = `<strong>✓ Correct!</strong> +${xp} XP.<br>${explanation}`;
+        markTaskDone(taskIdx, xp);
+      } else {
+        fb.className = "feedback-alert error";
+        fb.textContent = "✕ Incorrect. Review XXE mechanics and try again.";
+      }
+    }
+
+    function openResetModal() { document.getElementById("reset-modal").style.display = "flex"; }
+    function closeResetModal() { document.getElementById("reset-modal").style.display = "none"; }
+    function confirmResetRoom() {
+      const state = getProgress();
+      if (state.completedTasks) state.completedTasks[ROOM_ID] = [];
+      if (state.completedRooms) state.completedRooms = state.completedRooms.filter(r => r !== ROOM_ID);
+      localStorage.setItem("panAcademyProgress", JSON.stringify(state));
+      closeResetModal();
+      window.location.reload();
+    }
+
+    if (isTaskDone(0)) {
+      const btn = document.getElementById("btn-complete-task-0");
+      if (btn) {
+        btn.textContent = "✓ Completed";
+        btn.style.background = "#E2E8F0";
+        btn.style.color = "#166534";
+      }
+    }
+    if (isTaskDone(2)) {
+      const lines = document.querySelectorAll(".code-line");
+      if (lines[4]) lines[4].classList.add("vulnerable");
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>

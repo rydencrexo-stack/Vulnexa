@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-02T15:02:21.312834Z",
+  "items": [
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000001",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "Subfinder",
+      "slug": "subfinder",
+      "category": "recon",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "Passive subdomain discovery"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000002",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "HTTPx",
+      "slug": "httpx",
+      "category": "recon",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "HTTP service probing"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000003",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "Naabu",
+      "slug": "naabu",
+      "category": "recon",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "Port discovery"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000004",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "Katana",
+      "slug": "katana",
+      "category": "recon",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "URL discovery"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000005",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "Dalfox",
+      "slug": "dalfox",
+      "category": "specialist",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "XSS adapter interface"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000006",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "SQLmap",
+      "slug": "sqlmap",
+      "category": "specialist",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "SQLi adapter interface"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000007",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "Nuclei",
+      "slug": "nuclei",
+      "category": "specialist",
+      "enabled": true,
+      "mode": "mock",
+      "status": "available",
+      "version": null,
+      "description": "Configuration and CVE templates"
+    },
+    {
+      "id": "tool_00000000-0000-4000-8000-000000000008",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "name": "Acunetix",
+      "slug": "acunetix",
+      "category": "active",
+      "enabled": true,
+      "mode": "mock",
+      "status": "disconnected",
+      "version": null,
+      "description": "Dedicated active scanner adapter"
+    }
+  ]
+}

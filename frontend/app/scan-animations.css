@@ -1,0 +1,123 @@
+/* Live scan animations — scoped to the PAN scan views */
+
+.scan-live-wrap { position: relative; }
+
+/* pulsing status dot */
+.scan-pulse {
+  display: inline-block;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 0 rgba(53, 199, 181, 0.55);
+  animation: scan-pulse 1.6s ease-out infinite;
+  vertical-align: middle; margin-right: 7px;
+}
+.scan-pulse.amber { background: var(--amber); box-shadow: 0 0 0 0 rgba(255, 176, 32, 0.5); }
+.scan-pulse.red { background: var(--red); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.5); }
+@keyframes scan-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(53, 199, 181, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(53, 199, 181, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(53, 199, 181, 0); }
+}
+
+/* animated gradient progress bar */
+.scan-progress-track {
+  position: relative; height: 10px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07); overflow: hidden;
+}
+.scan-progress-fill {
+  position: absolute; inset: 0 auto 0 0; width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--teal), #69b89f, var(--teal));
+  background-size: 200% 100%;
+  animation: scan-flow 2.2s linear infinite;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scan-progress-fill.amber {
+  background: linear-gradient(90deg, var(--amber), #ffd166, var(--amber));
+  background-size: 200% 100%;
+}
+@keyframes scan-flow { from { background-position: 0% 0; } to { background-position: -200% 0; } }
+
+/* heartbeat border for live panels */
+.scan-heartbeat { animation: scan-heartbeat 2.4s ease-in-out infinite; }
+@keyframes scan-heartbeat {
+  0%, 100% { border-color: rgba(53, 199, 181, 0.14); }
+  50% { border-color: rgba(53, 199, 181, 0.5); }
+}
+
+/* radar sweep overlay */
+.scan-radar {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(53, 199, 181, 0.06), transparent 60%),
+    repeating-radial-gradient(circle at 50% 50%, transparent 0 26px, rgba(53, 199, 181, 0.08) 26px 27px);
+  border-radius: 16px;
+}
+.scan-radar::before {
+  content: ''; position: absolute; inset: 0;
+  background: conic-gradient(from 0deg, rgba(53, 199, 181, 0.45), transparent 70deg, transparent 360deg);
+  border-radius: inherit;
+  animation: scan-sweep 3.2s linear infinite;
+  pointer-events: none;
+}
+@keyframes scan-sweep { to { transform: rotate(360deg); } }
+
+/* live log terminal */
+.scan-live-log {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px; line-height: 1.9;
+  background: #04080a; border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px; padding: 14px 16px;
+  max-height: 320px; overflow: auto;
+}
+.scan-live-log .line {
+  color: var(--muted); white-space: pre-wrap; word-break: break-word;
+  animation: scan-line-in 0.35s ease both;
+}
+.scan-live-log .line.ok { color: var(--teal); }
+.scan-live-log .line.err { color: var(--red); }
+@keyframes scan-line-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.scan-caret {
+  display: inline-block; width: 8px; height: 14px; vertical-align: middle;
+  background: var(--teal); margin-left: 4px; animation: scan-blink 1s steps(2) infinite;
+}
+@keyframes scan-blink { 50% { opacity: 0; } }
+
+/* animated metric count-up target */
+.scan-metric-anim {
+  transition: transform 0.3s ease;
+}
+.scan-metric-anim:hover { transform: translateY(-2px); }
+
+/* subtle shimmer on live panels */
+.scan-shimmer {
+  position: relative;
+}
+.scan-shimmer::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+  animation: scan-shimmer 2.8s infinite; pointer-events: none;
+}
+@keyframes scan-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+/* surface tab inner nav */
+.scan-subtabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.scan-subtab {
+  font-size: 12px; font-weight: 650; color: var(--muted);
+  background: transparent; border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 8px 13px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+}
+.scan-subtab:hover { color: var(--foreground); border-color: rgba(53, 199, 181, 0.4); }
+.scan-subtab.is-active { background: var(--teal); color: #041513; border-color: var(--teal); font-weight: 750; }
+
+/* big progress readout */
+.scan-big-progress {
+  font-size: 42px; font-weight: 800; line-height: 1;
+  color: var(--teal); font-variant-numeric: tabular-nums;
+}
+.scan-phase-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--teal); border: 1px solid rgba(53, 199, 181, 0.3);
+  padding: 6px 12px; border-radius: 999px; background: rgba(53, 199, 181, 0.06);
+}

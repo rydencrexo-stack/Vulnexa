@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-02T15:02:21.248856Z",
+  "items": [
+    {
+      "id": "ep_11111111-1111-4111-8111-111111111111",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "workspaceId": "wsp_11111111-1111-4111-8111-111111111111",
+      "targetId": "tgt_11111111-1111-4111-8111-111111111111",
+      "assetId": "ast_11111111-1111-4111-8111-111111111111",
+      "url": "https://demo.example.com/search?q=demo",
+      "normalizedPath": "/search",
+      "method": "GET",
+      "contentType": "text/html",
+      "parameters": [
+        {
+          "name": "q",
+          "location": "query",
+          "dataType": "string",
+          "required": false
+        }
+      ],
+      "authenticationRequired": false,
+      "observedRole": null,
+      "discoverySource": "mock_katana",
+      "statusCode": 200,
+      "responseFingerprint": "sha256:mock-search",
+      "testsCompleted": [
+        "passive",
+        "xss"
+      ],
+      "firstSeen": "2026-09-02T13:37:21.178930Z",
+      "lastSeen": "2026-09-02T15:00:21.178930Z",
+      "kind": "web"
+    },
+    {
+      "id": "ep_22222222-2222-4222-8222-222222222222",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "workspaceId": "wsp_11111111-1111-4111-8111-111111111111",
+      "targetId": "tgt_11111111-1111-4111-8111-111111111111",
+      "assetId": "ast_22222222-2222-4222-8222-222222222222",
+      "url": "https://api.demo.example.com/v1/orders/1001",
+      "normalizedPath": "/v1/orders/{id}",
+      "method": "GET",
+      "contentType": "application/json",
+      "parameters": [
+        {
+          "name": "id",
+          "location": "path",
+          "dataType": "integer",
+          "required": true
+        }
+      ],
+      "authenticationRequired": true,
+      "observedRole": "user",
+      "discoverySource": "mock_javascript",
+      "statusCode": 200,
+      "responseFingerprint": "sha256:mock-order",
+      "testsCompleted": [
+        "passive",
+        "api"
+      ],
+      "firstSeen": "2026-09-02T13:42:21.178930Z",
+      "lastSeen": "2026-09-02T15:01:21.178930Z",
+      "kind": "api"
+    },
+    {
+      "id": "ep_33333333-3333-4333-8333-333333333333",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "workspaceId": "wsp_11111111-1111-4111-8111-111111111111",
+      "targetId": "tgt_11111111-1111-4111-8111-111111111111",
+      "assetId": "ast_22222222-2222-4222-8222-222222222222",
+      "url": "https://api.demo.example.com/v1/profile",
+      "normalizedPath": "/v1/profile",
+      "method": "PATCH",
+      "contentType": "application/json",
+      "parameters": [
+        {
+          "name": "displayName",
+          "location": "body",
+          "dataType": "string",
+          "required": false
+        }
+      ],
+      "authenticationRequired": true,
+      "observedRole": "user",
+      "discoverySource": "mock_openapi",
+      "statusCode": 200,
+      "responseFingerprint": "sha256:mock-profile",
+      "testsCompleted": [
+        "passive",
+        "api",
+        "misconfigurations"
+      ],
+      "firstSeen": "2026-09-02T13:52:21.178930Z",
+      "lastSeen": "2026-09-02T15:01:21.178930Z",
+      "kind": "api"
+    }
+  ]
+}

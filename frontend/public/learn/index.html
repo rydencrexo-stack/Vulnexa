@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/learn/academy-header.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAN Academy — Hands-On Cybersecurity Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Theme Colors - Light Learning Platform with Dark Navy Nav */
+      --bg-page: #F6F7F9;
+      --bg-card: #FFFFFF;
+      --bg-card-subtle: #F8FAFC;
+      --border-color: #E3E6EA;
+      --border-light: #EEF2F6;
+      --border-hover: #CBD5E1;
+      
+      /* Dark Navy Header & Accents */
+      --navy-dark: #0F172A;
+      --navy-header: #111827;
+      --navy-card: #1E293B;
+      --navy-border: #334155;
+      
+      /* Typography Colors */
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
+      --text-inverse: #FFFFFF;
+      
+      /* Accent Colors */
+      --accent-green: #22C55E;
+      --accent-green-light: #DCFCE7;
+      --accent-cyan: #0EA5E9;
+      --accent-cyan-light: #E0F2FE;
+      --accent-amber: #F59E0B;
+      --accent-purple: #8B5CF6;
+      --accent-red: #EF4444;
+      
+      /* Fonts & Sizing */
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* ==========================================================================
+       1. TOP NAVIGATION (Dark Navy Header)
+       ========================================================================== */
+    .pan-header {
+      background-color: var(--navy-header);
+      color: var(--text-inverse);
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .pan-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .brand-logo-mark {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #0EA5E9 0%, #10B981 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0F172A;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.03em;
+      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
+    }
+
+    .brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #FFFFFF;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent-green);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.9rem;
+      color: #94A3B8;
+      font-size: 0.92rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-link.active {
+      color: #FFFFFF;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 0.9rem;
+      right: 0.9rem;
+      height: 3px;
+      background: var(--accent-green);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .nav-icon-svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+      opacity: 0.85;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .search-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      border-radius: var(--radius-md);
+      padding: 0.4rem 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.15s;
+    }
+
+    .search-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .search-input-field {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      width: 140px;
+    }
+
+    .search-input-field::placeholder {
+      color: #64748B;
+    }
+
+    .notif-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.15s;
+      position: relative;
+    }
+
+    .notif-btn:hover { color: #FFFFFF; }
+
+    .notif-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
+    }
+
+    .btn-premium {
+      background: #84CC16;
+      color: #0F172A;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: filter 0.15s;
+    }
+
+    .btn-premium:hover {
+      filter: brightness(1.08);
+    }
+
+    .user-stats-pill {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #CBD5E1;
+      padding-left: 0.5rem;
+    }
+
+    .stat-pill-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .avatar-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #0284C7;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.02em;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* ==========================================================================
+       2. MAIN PAGE LAYOUT (Light Background Container)
+       ========================================================================== */
+    .page-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem 4rem;
+    }
+
+    /* ==========================================================================
+       3. PROMOTIONAL / TOP HERO BANNER
+       ========================================================================== */
+    .promo-banner {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-content {
+      max-width: 620px;
+    }
+
+    .promo-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+    }
+
+    .promo-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+
+    .promo-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .promo-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-md);
+      transition: background 0.15s;
+    }
+
+    .promo-action-btn:hover {
+      background: #1E293B;
+    }
+
+    .promo-aside {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .qr-mock {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem;
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: var(--radius-md);
+    }
+
+    .qr-svg {
+      width: 54px;
+      height: 54px;
+    }
+
+    .promo-mascot {
+      width: 72px;
+      height: 72px;
+    }
+
+    /* ==========================================================================
+       4. TWO COLUMN MAIN LAYOUT (Left 68%, Right 32%)
+       ========================================================================== */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* ==========================================================================
+       5. LEFT COLUMN: MY LEARNING & TRACKS
+       ========================================================================== */
+    .learning-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+
+    /* Header & Tabs */
+    .section-nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-main-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .learning-tabs {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 0.5rem;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.25rem 0.2rem;
+      position: relative;
+      transition: color 0.15s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.6rem;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-green);
+      border-radius: 2px;
+    }
+
+    /* Large Featured Module Card (Screenshot Reference Style) */
+    .current-module-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .current-module-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-md);
+    }
+
+    .module-header-banner {
+      background: #111B2B;
+      color: #FFFFFF;
+      padding: 1.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-tag-sm {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #94A3B8;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .module-hero-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #FFFFFF;
+    }
+
+    .module-illustration-wrap {
+      width: 120px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .wireframe-sphere {
+      width: 90px;
+      height: 90px;
+      filter: drop-shadow(0 4px 12px rgba(225, 29, 72, 0.3));
+    }
+
+    .module-body {
+      padding: 1.75rem 2rem;
+    }
+
+    .module-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      max-width: 650px;
+    }
+
+    .module-meta-chips {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .chip-badge {
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      color: var(--text-main);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    .chip-badge.beginner {
+      background: #DCFCE7;
+      border-color: #BBF7D0;
+      color: #166534;
+    }
+
+    .xp-chip {
+      color: #D97706;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .module-progress-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    .progress-bar-container {
+      background: #EEF2F6;
+      height: 8px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-bar-active {
+      height: 100%;
+      background: #22C55E;
+      border-radius: var(--radius-full);
+      transition: width 0.4s ease;
+    }
+
+    .module-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .keep-going-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #DCFCE7;
+      color: #15803D;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .btn-continue-learning {
+      background: #22C55E;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 6px rgba(34, 197, 94, 0.3);
+      transition: all 0.15s;
+    }
+
+    .btn-continue-learning:hover {
+      background: #16A34A;
+      transform: translateY(-1px);
+    }
+
+    /* Sub-tabs content areas */
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Recent & Saved Rooms Lists */
+    .rooms-flat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .room-flat-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: border-color 0.15s;
+    }
+
+    .room-flat-item:hover {
+      border-color: var(--border-hover);
+    }
+
+    .room-flat-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .room-flat-icon {
+      width: 42px;
+      height: 42px;
+      background: #F1F5F9;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .room-flat-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.2rem;
+    }
+
+    .room-flat-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* ==========================================================================
+       6. LEARNING TRACKS SECTION
+       ========================================================================== */
+    .tracks-section {
+      margin-top: 1rem;
+    }
+
+    .tracks-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .tracks-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .tracks-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .track-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .track-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .track-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .track-icon-square {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+    }
+
+    .track-category-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    .track-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+    }
+
+    .track-description {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .track-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-light);
+      font-size: 0.82rem;
+    }
+
+    .track-room-count {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .track-action-link {
+      color: #0284C7;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.15s;
+    }
+
+    .track-card:hover .track-action-link {
+      gap: 0.5rem;
+    }
+
+    /* Featured Track Span */
+    .track-card.featured-span {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid #CBD5E1;
+    }
+
+    /* ==========================================================================
+       7. RIGHT COLUMN: ACADEMY GOALS & MISSION PANEL
+       ========================================================================== */
+    .sidebar-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: sticky;
+      top: 80px;
+    }
+
+    .goals-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Top mint banner matching screenshot */
+    .goals-top-header {
+      background: linear-gradient(180deg, #DCFCE7 0%, #F0FDF4 100%);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #166534;
+      border-bottom: 1px solid #BBF7D0;
+    }
+
+    .goals-main-header {
+      padding: 1.25rem 1.25rem 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .mission-chest-icon {
+      width: 38px;
+      height: 38px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .goals-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .goals-heading {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .goals-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Goals List */
+    .goals-list {
+      padding: 1rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .goal-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .goal-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .goal-name-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .goal-icon {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .goal-fraction {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .goal-bar-track {
+      background: #EEF2F6;
+      height: 6px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .goal-bar-fill {
+      height: 100%;
+      background: #22C55E;
+      border-radius: var(--radius-full);
+    }
+
+    /* Bonus Chest Card */
+    .bonus-mission-card {
+      margin: 0 1.25rem 1.25rem;
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .bonus-mission-card:hover {
+      background: #F1F5F9;
+      border-color: #94A3B8;
+    }
+
+    .bonus-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .bonus-icon {
+      font-size: 1.4rem;
+    }
+
+    .bonus-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .bonus-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .bonus-arrow {
+      color: var(--text-light);
+      font-weight: 700;
+    }
+
+    /* Level / Stats Card */
+    .quick-stats-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-box {
+      padding: 0.5rem 0.25rem;
+      background: #F8FAFC;
+      border-radius: var(--radius-md);
+      border: 1px solid #EEF2F6;
+    }
+
+    .stat-num {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
+    /* ==========================================================================
+       8. RESPONSIVE DESIGN
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-col {
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .pan-header {
+        padding: 0 1rem;
+      }
+      .nav-links {
+        display: none;
+      }
+      .promo-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+      }
+      .promo-aside {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .module-header-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .module-illustration-wrap {
+        align-self: center;
+      }
+      .tracks-grid {
+        grid-template-columns: 1fr;
+      }
+      .page-wrap {
+        padding: 1rem 1rem 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP NAVIGATION -->
+  <header class="pan-header">
+    <div class="header-left">
+      <a href="index.html" class="pan-brand">
+        <div class="brand-logo-mark">D</div>
+        <div class="brand-text-wrap">
+          <span class="brand-name">DELTA</span>
+          <span class="brand-sub">Academy</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">
+              <svg class="nav-icon-svg" viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg>
+              Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="nav-link active">
+              <svg class="nav-icon-svg" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"/></svg>
+              Learn
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="vulnerabilities/index.html" class="nav-link">
+              <svg class="nav-icon-svg" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/></svg>
+              Practice
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#goals" class="nav-link">
+              <svg class="nav-icon-svg" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/></svg>
+              Progress
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="search-btn">
+        <span>🔍</span>
+        <input type="text" class="search-input-field" id="global-search-input" placeholder="Search rooms...">
+      </div>
+
+      <button class="notif-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span class="notif-badge"></span>
+      </button>
+
+      <a href="/dashboard" class="btn-premium back-dash-btn" style="align-items:center;background:transparent;border:1px solid currentColor;display:inline-flex;font-size:12px;font-weight:600;gap:6px;justify-content:center;padding:9px 14px;text-decoration:none;">← Dashboard</a>
+
+      <button class="btn-premium" onclick="location.href='getting-started/index.html'">Start Path</button>
+
+      <div class="user-stats-pill">
+        <div class="stat-pill-item" title="Experience Points">
+          <span>💎</span>
+          <span id="top-xp-val">0</span>
+        </div>
+        <div class="stat-pill-item" title="Streak Days">
+          <span>🔥</span>
+          <span id="top-streak-val">1</span>
+        </div>
+        <div class="avatar-badge" title="User Profile">SD</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. MAIN CONTENT WRAPPER -->
+  <div class="page-wrap">
+
+    <!-- TOP PROMOTIONAL BANNER -->
+    <section class="promo-banner">
+      <div class="promo-content">
+        <h1 class="promo-title">Build your cybersecurity skills</h1>
+        <p class="promo-desc">Learn how PAN discovers assets, analyzes attack surfaces, and empowers security teams to identify vulnerabilities with real-world scenarios.</p>
+        <div class="promo-links">
+          <a href="vulnerabilities/xss/index.html" class="promo-action-btn">
+            Continue Learning →
+          </a>
+        </div>
+      </div>
+
+      <div class="promo-aside">
+        <div class="qr-mock">
+          <!-- Clean SVG QR code graphic -->
+          <svg class="qr-svg" viewBox="0 0 40 40">
+            <rect width="40" height="40" fill="#FFFFFF" rx="4"/>
+            <rect x="4" y="4" width="10" height="10" fill="#1E293B" rx="1"/>
+            <rect x="6" y="6" width="6" height="6" fill="#FFFFFF"/>
+            <rect x="7.5" y="7.5" width="3" height="3" fill="#1E293B"/>
+            <rect x="26" y="4" width="10" height="10" fill="#1E293B" rx="1"/>
+            <rect x="28" y="6" width="6" height="6" fill="#FFFFFF"/>
+            <rect x="29.5" y="7.5" width="3" height="3" fill="#1E293B"/>
+            <rect x="4" y="26" width="10" height="10" fill="#1E293B" rx="1"/>
+            <rect x="6" y="28" width="6" height="6" fill="#FFFFFF"/>
+            <rect x="7.5" y="29.5" width="3" height="3" fill="#1E293B"/>
+            <rect x="18" y="4" width="4" height="4" fill="#1E293B"/>
+            <rect x="18" y="12" width="4" height="4" fill="#1E293B"/>
+            <rect x="18" y="20" width="4" height="4" fill="#1E293B"/>
+            <rect x="26" y="20" width="4" height="4" fill="#1E293B"/>
+            <rect x="32" y="20" width="4" height="4" fill="#1E293B"/>
+            <rect x="20" y="28" width="4" height="4" fill="#1E293B"/>
+            <rect x="28" y="28" width="8" height="4" fill="#1E293B"/>
+            <rect x="20" y="34" width="6" height="2" fill="#1E293B"/>
+          </svg>
+          <span style="font-size:0.65rem; font-weight:700; color:#64748B;">PAN Security</span>
+        </div>
+
+        <!-- Technical Security Mascot / Terminal Icon -->
+        <div class="promo-mascot">
+          <svg viewBox="0 0 100 100" fill="none">
+            <rect x="10" y="15" width="80" height="65" rx="8" fill="#1E293B"/>
+            <rect x="15" y="22" width="70" height="45" rx="4" fill="#0F172A"/>
+            <circle cx="25" cy="30" r="3" fill="#EF4444"/>
+            <circle cx="33" cy="30" r="3" fill="#F59E0B"/>
+            <circle cx="41" cy="30" r="3" fill="#22C55E"/>
+            <path d="M25 45L35 52L25 59" stroke="#22C55E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="42" y1="59" x2="58" y2="59" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>
+            <rect x="35" y="80" width="30" height="8" rx="2" fill="#334155"/>
+            <rect x="25" y="88" width="50" height="4" rx="2" fill="#475569"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- TWO-COLUMN DASHBOARD GRID -->
+    <div class="dashboard-grid">
+
+      <!-- LEFT COLUMN -->
+      <div class="learning-col">
+
+        <!-- "MY LEARNING" SECTION -->
+        <section>
+          <div class="section-nav-row">
+            <h2 class="section-main-title">My Learning</h2>
+
+            <!-- Clean Line Tabs -->
+            <div class="learning-tabs">
+              <button class="tab-btn active" onclick="switchTab('current', this)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                Current
+              </button>
+              <button class="tab-btn" onclick="switchTab('recent', this)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Recent
+              </button>
+              <button class="tab-btn" onclick="switchTab('saved', this)">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                Saved
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT: CURRENT MODULE -->
+          <div class="tab-pane active" id="tab-pane-current">
+            <div class="current-module-card" id="active-featured-card">
+              <div class="module-header-banner">
+                <div>
+                  <div class="module-tag-sm" id="curr-mod-category">Module 02 · Web Vulnerabilities</div>
+                  <h3 class="module-hero-title" id="curr-mod-title">XSS Fundamentals</h3>
+                </div>
+
+                <!-- Clean Geometric Faceted Sphere / Technical Visual -->
+                <div class="module-illustration-wrap">
+                  <svg class="wireframe-sphere" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="42" fill="#1E293B" stroke="#0284C7" stroke-width="1.5" stroke-dasharray="3 3"/>
+                    <ellipse cx="50" cy="50" rx="42" ry="16" stroke="#38BDF8" stroke-width="1.5"/>
+                    <ellipse cx="50" cy="50" rx="16" ry="42" stroke="#38BDF8" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="28" stroke="#F43F5E" stroke-width="2"/>
+                    <polygon points="50,15 75,35 65,70 35,70 25,35" fill="rgba(244, 63, 94, 0.25)" stroke="#F43F5E" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="4" fill="#22C55E"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="module-body">
+                <p class="module-desc" id="curr-mod-desc">
+                  Understand how Cross-Site Scripting occurs in web applications, inspect reflected payloads, practice interactive code remediation, and secure vulnerable client endpoints.
+                </p>
+
+                <div class="module-meta-chips">
+                  <span class="chip-badge beginner" id="curr-mod-diff">Beginner</span>
+                  <span>⏱ <strong id="curr-mod-time">35 min</strong></span>
+                  <span class="xp-chip">🏆 <span id="curr-mod-xp">+400 XP</span></span>
+                  <span>📝 <span id="curr-mod-tasks-count">4 Tasks</span></span>
+                </div>
+
+                <div class="module-progress-section">
+                  <div class="progress-info-row">
+                    <span>Progress</span>
+                    <span id="curr-mod-percent">0%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-active" id="curr-mod-prog-bar" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="module-footer-row">
+                  <div class="keep-going-badge">
+                    <span>●</span> Keep going
+                  </div>
+                  <a href="vulnerabilities/xss/index.html" class="btn-continue-learning" id="curr-mod-action-link">
+                    Continue Learning →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT: RECENT -->
+          <div class="tab-pane" id="tab-pane-recent">
+            <div class="rooms-flat-list">
+              <a href="getting-started/intro-to-pan/index.html" class="room-flat-item">
+                <div class="room-flat-left">
+                  <div class="room-flat-icon">🚀</div>
+                  <div>
+                    <h4 class="room-flat-title">Introduction to PAN</h4>
+                    <div class="room-flat-meta">
+                      <span>Beginner</span> · <span>20 min</span> · <span>+250 XP</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="promo-action-btn">Launch Room →</button>
+              </a>
+
+              <a href="vulnerabilities/sql-injection/index.html" class="room-flat-item">
+                <div class="room-flat-left">
+                  <div class="room-flat-icon">💉</div>
+                  <div>
+                    <h4 class="room-flat-title">SQL Injection Fundamentals</h4>
+                    <div class="room-flat-meta">
+                      <span>Intermediate</span> · <span>40 min</span> · <span>+450 XP</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="promo-action-btn">Launch Room →</button>
+              </a>
+
+              <a href="reconnaissance/recon-fundamentals/index.html" class="room-flat-item">
+                <div class="room-flat-left">
+                  <div class="room-flat-icon">🔎</div>
+                  <div>
+                    <h4 class="room-flat-title">Reconnaissance Fundamentals</h4>
+                    <div class="room-flat-meta">
+                      <span>Beginner</span> · <span>35 min</span> · <span>+350 XP</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="promo-action-btn">Launch Room →</button>
+              </a>
+            </div>
+          </div>
+
+          <!-- TAB CONTENT: SAVED -->
+          <div class="tab-pane" id="tab-pane-saved">
+            <div class="rooms-flat-list">
+              <a href="vulnerabilities/idor/index.html" class="room-flat-item">
+                <div class="room-flat-left">
+                  <div class="room-flat-icon">🔑</div>
+                  <div>
+                    <h4 class="room-flat-title">Insecure Direct Object References (IDOR)</h4>
+                    <div class="room-flat-meta">
+                      <span>Intermediate</span> · <span>30 min</span> · <span>+350 XP</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="promo-action-btn">Launch Room →</button>
+              </a>
+
+              <a href="understanding-findings/security-findings/index.html" class="room-flat-item">
+                <div class="room-flat-left">
+                  <div class="room-flat-icon">🛡️</div>
+                  <div>
+                    <h4 class="room-flat-title">Analyzing Security Findings</h4>
+                    <div class="room-flat-meta">
+                      <span>Beginner</span> · <span>25 min</span> · <span>+350 XP</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="promo-action-btn">Launch Room →</button>
+              </a>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- LEARNING TRACKS SECTION -->
+        <section class="tracks-section">
+          <div class="tracks-header">
+            <h2 class="tracks-title">Learning Tracks</h2>
+            <p class="tracks-subtitle">Structured hands-on pathways to master offensive and defensive cybersecurity workflows.</p>
+          </div>
+
+          <div class="tracks-grid" id="tracks-container">
+            <!-- Track 1: Getting Started -->
+            <a href="getting-started/index.html" class="track-card" data-title="Getting Started" data-tags="foundations introductory setup">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square">🚀</div>
+                  <span class="track-category-label">Path 01</span>
+                </div>
+                <h3 class="track-title">Getting Started</h3>
+                <p class="track-description">Master the core concepts of the PAN security platform, setup targets, and initiate automated assessments.</p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count">2 Rooms · 550 XP</span>
+                <span class="track-action-link">Explore →</span>
+              </div>
+            </a>
+
+            <!-- Track 2: Understanding Scans -->
+            <a href="understanding-scans/index.html" class="track-card" data-title="Understanding Scans" data-tags="active passive scanning probes">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square">📡</div>
+                  <span class="track-category-label">Path 02</span>
+                </div>
+                <h3 class="track-title">Understanding Scans</h3>
+                <p class="track-description">Compare active payload fuzzing versus non-intrusive passive telemetry and surface discovery.</p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count">1 Room · 300 XP</span>
+                <span class="track-action-link">Explore →</span>
+              </div>
+            </a>
+
+            <!-- Track 3: Understanding Findings -->
+            <a href="understanding-findings/index.html" class="track-card" data-title="Understanding Findings" data-tags="triage false positives severity cve">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square">🛡️</div>
+                  <span class="track-category-label">Path 03</span>
+                </div>
+                <h3 class="track-title">Understanding Findings</h3>
+                <p class="track-description">Interpret vulnerability severity, analyze confidence scores, filter noise, and prioritize remediation.</p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count">1 Room · 350 XP</span>
+                <span class="track-action-link">Explore →</span>
+              </div>
+            </a>
+
+            <!-- Track 4: Reconnaissance -->
+            <a href="reconnaissance/index.html" class="track-card" data-title="Reconnaissance" data-tags="attack surface subdomains dns ports">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square">🔎</div>
+                  <span class="track-category-label">Path 04</span>
+                </div>
+                <h3 class="track-title">Reconnaissance</h3>
+                <p class="track-description">Map attack surfaces, uncover rogue endpoints, enumerate subdomains, and gather intelligence.</p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count">1 Room · 350 XP</span>
+                <span class="track-action-link">Explore →</span>
+              </div>
+            </a>
+
+            <!-- Track 5: Active Scanning -->
+            <a href="active-scanning/index.html" class="track-card" data-title="Active Scanning" data-tags="fuzzing injection crawler auth">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square">⚡</div>
+                  <span class="track-category-label">Path 05</span>
+                </div>
+                <h3 class="track-title">Active Scanning</h3>
+                <p class="track-description">Explore deep web crawlers, parameter fuzzing algorithms, authenticated sessions, and rate limits.</p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count">Curriculum · 400 XP</span>
+                <span class="track-action-link">Explore →</span>
+              </div>
+            </a>
+
+            <!-- Track 6: Passive Scanning -->
+            <a href="passive-scanning/index.html" class="track-card" data-title="Passive Scanning" data-tags="osint secrets telemetry headers">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square">👁️</div>
+                  <span class="track-category-label">Path 06</span>
+                </div>
+                <h3 class="track-title">Passive Scanning</h3>
+                <p class="track-description">Inspect public TLS certificates, historical Wayback archives, and hardcoded API keys in JavaScript.</p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count">Curriculum · 300 XP</span>
+                <span class="track-action-link">Explore →</span>
+              </div>
+            </a>
+
+            <!-- Featured Full-Span Track: Vulnerability Library -->
+            <a href="vulnerabilities/index.html" class="track-card featured-span" data-title="Vulnerability Library" data-tags="owasp xss sqli idor ssrf xxe upload misconfig">
+              <div>
+                <div class="track-top-row">
+                  <div class="track-icon-square" style="background:#FEF2F2; border-color:#FECACA;">💥</div>
+                  <span class="track-category-label" style="color:#DC2626;">OWASP Top 10 Hands-On Modules</span>
+                </div>
+                <h3 class="track-title" style="font-size:1.25rem;">Vulnerability Library</h3>
+                <p class="track-description" style="max-width:700px;">
+                  Complete interactive labs for Cross-Site Scripting (XSS), SQL Injection, IDOR, SSRF, XXE Injection, Unrestricted File Upload, and Security Misconfigurations.
+                </p>
+              </div>
+              <div class="track-footer">
+                <span class="track-room-count" style="font-weight:700; color:var(--text-main);">7 Hands-On Rooms · 2,800 Total XP</span>
+                <span class="track-action-link" style="color:#DC2626;">Open Vulnerability Library →</span>
+              </div>
+            </a>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN: ACADEMY GOALS & MISSIONS -->
+      <aside class="sidebar-col" id="goals">
+
+        <!-- Goals / Weekly Mission Panel -->
+        <div class="goals-panel">
+          <!-- Soft Mint Header matching screenshot -->
+          <div class="goals-top-header">
+            <span>⏱</span>
+            <span>3 days to next mission</span>
+          </div>
+
+          <div class="goals-main-header">
+            <div class="mission-chest-icon">🎁</div>
+            <div class="goals-title-wrap">
+              <h3 class="goals-heading">Weekly Mission</h3>
+              <span class="goals-sub">What's in the chest? 👀</span>
+            </div>
+          </div>
+
+          <div class="goals-list">
+            <!-- Goal 1: Streak -->
+            <div class="goal-item">
+              <div class="goal-top-row">
+                <span class="goal-name-left">
+                  <span class="goal-icon">🔥</span> Go on a 1-day streak
+                </span>
+                <span class="goal-fraction" id="goal-streak-fraction">1 / 1</span>
+              </div>
+              <div class="goal-bar-track">
+                <div class="goal-bar-fill" id="goal-streak-bar" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <!-- Goal 2: Task Completion -->
+            <div class="goal-item">
+              <div class="goal-top-row">
+                <span class="goal-name-left">
+                  <span class="goal-icon">💻</span> Complete learning tasks
+                </span>
+                <span class="goal-fraction" id="goal-tasks-fraction">1 / 3</span>
+              </div>
+              <div class="goal-bar-track">
+                <div class="goal-bar-fill" id="goal-tasks-bar" style="width: 33%;"></div>
+              </div>
+            </div>
+
+            <!-- Goal 3: Rooms -->
+            <div class="goal-item">
+              <div class="goal-top-row">
+                <span class="goal-name-left">
+                  <span class="goal-icon">🚪</span> Complete Rooms
+                </span>
+                <span class="goal-fraction" id="goal-rooms-fraction">0 / 7</span>
+              </div>
+              <div class="goal-bar-track">
+                <div class="goal-bar-fill" id="goal-rooms-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Goal 4: XP Goal -->
+            <div class="goal-item">
+              <div class="goal-top-row">
+                <span class="goal-name-left">
+                  <span class="goal-icon">💎</span> Earn XP
+                </span>
+                <span class="goal-fraction" id="goal-xp-fraction">0 / 1000</span>
+              </div>
+              <div class="goal-bar-track">
+                <div class="goal-bar-fill" id="goal-xp-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bonus Chest Card -->
+          <div class="bonus-mission-card" onclick="alert('Complete weekly missions to unlock exclusive PAN security badges!')">
+            <div class="bonus-left">
+              <div class="bonus-icon">📦</div>
+              <div>
+                <div class="bonus-title">Complete 4 Missions <span style="color:#64748B;">0 / 4</span></div>
+                <div class="bonus-sub">Unlock the bonus rewards chest.</div>
+              </div>
+            </div>
+            <div class="bonus-arrow">›</div>
+          </div>
+        </div>
+
+        <!-- Quick Stats Card -->
+        <div class="quick-stats-card">
+          <div class="stat-row-grid">
+            <div class="stat-box">
+              <div class="stat-num" id="sidebar-level">Lvl 1</div>
+              <div class="stat-label">Tier</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="sidebar-xp">0</div>
+              <div class="stat-label">Total XP</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num" id="sidebar-rooms">0 / 7</div>
+              <div class="stat-label">Rooms</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT: State Management & UI Binding -->
+  <script>
+    // 1. State Management with LocalStorage
+    function loadProgress() {
+      try {
+        const raw = localStorage.getItem("panAcademyProgress");
+        if (!raw) return { xp: 0, completedRooms: [], completedTasks: {}, streak: 1 };
+        return JSON.parse(raw);
+      } catch (e) {
+        return { xp: 0, completedRooms: [], completedTasks: {}, streak: 1 };
+      }
+    }
+
+    function calculateLevel(xp) {
+      if (xp < 500) return { level: 1, label: "Lvl 1" };
+      if (xp < 1000) return { level: 2, label: "Lvl 2" };
+      if (xp < 1750) return { level: 3, label: "Lvl 3" };
+      if (xp < 2500) return { level: 4, label: "Lvl 4" };
+      return { level: 5, label: "Lvl 5" };
+    }
+
+    // 2. Tab Switching Logic
+    function switchTab(tabId, el) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(pane => pane.classList.remove("active"));
+      
+      if (el) el.classList.add("active");
+      const targetPane = document.getElementById(`tab-pane-${tabId}`);
+      if (targetPane) targetPane.classList.add("active");
+    }
+
+    // 3. Populate Page & Update Progress
+    function renderDashboard() {
+      const state = loadProgress();
+      const xp = state.xp || 0;
+      const streak = state.streak || 1;
+      const lvl = calculateLevel(xp);
+      const completedRoomsCount = (state.completedRooms || []).length;
+      
+      // Top header stats
+      document.getElementById("top-xp-val").textContent = xp;
+      document.getElementById("top-streak-val").textContent = streak;
+
+      // Sidebar Quick Stats
+      document.getElementById("sidebar-level").textContent = lvl.label;
+      document.getElementById("sidebar-xp").textContent = `${xp} XP`;
+      document.getElementById("sidebar-rooms").textContent = `${completedRoomsCount} / 7`;
+
+      // Right Goals Panel
+      const totalCompletedTasks = Object.values(state.completedTasks || {}).reduce((acc, curr) => acc + (curr.length || 0), 0);
+      
+      // Goal 1: Streak (1/1)
+      document.getElementById("goal-streak-fraction").textContent = `${streak} / 1`;
+      document.getElementById("goal-streak-bar").style.width = `100%`;
+
+      // Goal 2: Learning tasks (min 3)
+      const tasksGoalTarget = 3;
+      const tasksFraction = Math.min(totalCompletedTasks, tasksGoalTarget);
+      document.getElementById("goal-tasks-fraction").textContent = `${tasksFraction} / ${tasksGoalTarget}`;
+      document.getElementById("goal-tasks-bar").style.width = `${Math.min(100, Math.round((totalCompletedTasks / tasksGoalTarget) * 100))}%`;
+
+      // Goal 3: Rooms (completed / 7)
+      document.getElementById("goal-rooms-fraction").textContent = `${completedRoomsCount} / 7`;
+      document.getElementById("goal-rooms-bar").style.width = `${Math.min(100, Math.round((completedRoomsCount / 7) * 100))}%`;
+
+      // Goal 4: XP Goal (target 1000)
+      const xpGoalTarget = 1000;
+      document.getElementById("goal-xp-fraction").textContent = `${xp} / ${xpGoalTarget}`;
+      document.getElementById("goal-xp-bar").style.width = `${Math.min(100, Math.round((xp / xpGoalTarget) * 100))}%`;
+
+      // Current Featured Module (Default: XSS Fundamentals)
+      const xssTasks = (state.completedTasks && state.completedTasks["xss"]) ? state.completedTasks["xss"].length : 0;
+      const xssDone = state.completedRooms && state.completedRooms.includes("xss");
+      const xssPercent = xssDone ? 100 : Math.round((xssTasks / 4) * 100);
+
+      const progBar = document.getElementById("curr-mod-prog-bar");
+      const progText = document.getElementById("curr-mod-percent");
+      if (progBar && progText) {
+        progBar.style.width = `${xssPercent}%`;
+        progText.textContent = `${xssPercent}%`;
+      }
+    }
+
+    // 4. Live Search Filter
+    document.getElementById("global-search-input").addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const trackCards = document.querySelectorAll(".track-card");
+      trackCards.forEach(card => {
+        const title = (card.getAttribute("data-title") || "").toLowerCase();
+        const tags = (card.getAttribute("data-tags") || "").toLowerCase();
+        if (title.includes(query) || tags.includes(query)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+
+    // Initialize on page load
+    renderDashboard();
+  </script>
+</body>
+</html>

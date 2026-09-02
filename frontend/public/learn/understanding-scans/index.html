@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/learn/academy-header.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAN Academy — Understanding Scans</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F6F7F9;
+      --bg-card: #FFFFFF;
+      --border-color: #E3E6EA;
+      --border-light: #EEF2F6;
+      --navy-dark: #0F172A;
+      --navy-header: #111827;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --accent-green: #22C55E;
+      --accent-cyan: #0EA5E9;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-nav {
+      background: var(--navy-header);
+      color: #FFFFFF;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 0.6rem; font-weight: 800; font-size: 1.1rem; color: #FFFFFF; }
+    .brand-mark { width: 28px; height: 28px; background: linear-gradient(135deg, #0EA5E9, #22C55E); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0F172A; font-weight: 800; font-size: 0.9rem; }
+    .nav-back-link { color: #94A3B8; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+    .nav-back-link:hover { color: #FFFFFF; }
+    
+    .main-wrap { max-width: 1000px; margin: 2rem auto 4rem; padding: 0 1.5rem; }
+    .track-hero-card {
+      background: #FFFFFF; border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg); padding: 2rem 2.25rem; margin-bottom: 2rem; box-shadow: var(--shadow-sm);
+    }
+    .track-badge {
+      display: inline-block; background: #E0F2FE; color: #0369A1;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+      padding: 2px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .track-title { font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.4rem; }
+    .track-desc { font-size: 1rem; color: var(--text-muted); max-width: 700px; margin-bottom: 1.5rem; }
+    .track-stats-row { display: flex; gap: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-light); }
+    .stat-val { font-size: 1.3rem; font-weight: 800; color: var(--text-main); font-family: var(--font-mono); }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+
+    .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+    .room-card {
+      background: #FFFFFF; border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg); padding: 1.5rem; display: flex;
+      flex-direction: column; justify-content: space-between; transition: all 0.2s; box-shadow: var(--shadow-sm);
+    }
+    .room-card:hover { border-color: #CBD5E1; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .room-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 0.5rem 0 0.25rem; }
+    .room-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.25rem; }
+    .btn-start-lab {
+      background: var(--navy-dark); color: #FFFFFF; font-size: 0.82rem;
+      font-weight: 700; padding: 0.4rem 0.9rem; border-radius: var(--radius-md); border: none; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <a href="../index.html" class="brand-wrap">
+      <div class="brand-mark">P</div>
+      <span>PAN Academy</span>
+    </a>
+    <a href="../index.html" class="nav-back-link">← Back to Academy</a>
+  </header>
+
+  <main class="main-wrap">
+    <div class="track-hero-card">
+      <span class="track-badge">Scanning Methodology Track</span>
+      <h1 class="track-title">Understanding Scans</h1>
+      <p class="track-desc">Learn how active and passive security scanning engines discover endpoints, evaluate headers, and safely transmit payloads.</p>
+      
+      <div class="track-stats-row">
+        <div>
+          <div class="stat-val">1 Room</div>
+          <div class="stat-label">Track Length</div>
+        </div>
+        <div>
+          <div class="stat-val">350 XP</div>
+          <div class="stat-label">Total XP Available</div>
+        </div>
+        <div>
+          <div class="stat-val">Beginner</div>
+          <div class="stat-label">Difficulty</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem;">Track Rooms</h2>
+    <div class="rooms-grid">
+      <a href="active-vs-passive/index.html" class="room-card">
+        <div>
+          <span style="font-size:0.72rem; font-weight:700; background:#DCFCE7; color:#166534; padding:2px 8px; border-radius:4px; text-transform:uppercase;">Beginner</span>
+          <h3 class="room-title">Active vs Passive Scanning</h3>
+          <p class="room-desc">Compare non-intrusive observation techniques with active payload probing, rate limits, and scan safety policies.</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-light); padding-top:0.85rem;">
+          <span style="font-family:var(--font-mono); font-size:0.82rem; font-weight:700; color:#D97706;">🏆 +350 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

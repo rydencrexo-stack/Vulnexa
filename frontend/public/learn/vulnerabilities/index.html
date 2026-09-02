@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/learn/academy-header.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAN Academy — Vulnerability Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #F6F7F9;
+      --bg-card: #FFFFFF;
+      --bg-card-subtle: #F8FAFC;
+      --border-color: #E3E6EA;
+      --border-light: #EEF2F6;
+      
+      --navy-dark: #0F172A;
+      --navy-header: #111827;
+      
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
+      
+      --accent-green: #22C55E;
+      --accent-cyan: #0EA5E9;
+      --accent-amber: #F59E0B;
+      --accent-red: #EF4444;
+      
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Top Nav */
+    .top-nav {
+      background: var(--navy-header);
+      color: #FFFFFF;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #FFFFFF;
+    }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #0EA5E9, #22C55E);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0F172A;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+    .nav-back-link {
+      color: #94A3B8;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-back-link:hover { color: #FFFFFF; }
+
+    .main-wrap {
+      max-width: 1180px;
+      margin: 2rem auto 4rem;
+      padding: 0 1.5rem;
+    }
+
+    /* Track Hero */
+    .track-hero-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.25rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .track-badge {
+      display: inline-block;
+      background: #FEE2E2;
+      color: #DC2626;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .track-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+    .track-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 750px;
+      margin-bottom: 1.5rem;
+    }
+    .track-stats-row {
+      display: flex;
+      gap: 2.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-light);
+    }
+    .stat-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Labs Grid */
+    .labs-section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+    }
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.25rem;
+    }
+    .room-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+      color: inherit;
+    }
+    .room-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .diff-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .diff-beginner { background: #DCFCE7; color: #166534; }
+    .diff-intermediate { background: #FEF3C7; color: #B45309; }
+    .diff-advanced { background: #FEE2E2; color: #B91C1C; }
+
+    .room-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+    .room-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+    .room-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-light);
+    }
+    .xp-badge {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #D97706;
+    }
+    .btn-start-lab {
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-start-lab:hover { background: #1E293B; }
+  </style>
+</head>
+<body>
+
+  <header class="top-nav">
+    <a href="../index.html" class="brand-wrap">
+      <div class="brand-mark">P</div>
+      <span>PAN Academy</span>
+    </a>
+    <a href="../index.html" class="nav-back-link">
+      ← Back to Academy
+    </a>
+  </header>
+
+  <main class="main-wrap">
+    <div class="track-hero-card">
+      <span class="track-badge">OWASP Top 10 Hands-On Modules</span>
+      <h1 class="track-title">Vulnerability Library</h1>
+      <p class="track-desc">
+        Comprehensive vulnerability labs: understand root causes, analyze realistic vulnerable code snippets, inspect raw HTTP transactions, and apply secure remediation.
+      </p>
+
+      <div class="track-stats-row">
+        <div>
+          <div class="stat-val">7 Labs</div>
+          <div class="stat-label">Total Rooms</div>
+        </div>
+        <div>
+          <div class="stat-val">2,800 XP</div>
+          <div class="stat-label">Total XP Available</div>
+        </div>
+        <div>
+          <div class="stat-val">Beginner – Advanced</div>
+          <div class="stat-label">Skill Level</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="labs-section-title">Hands-On Security Rooms</h2>
+
+    <div class="rooms-grid">
+      <!-- 1. XSS -->
+      <a href="xss/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-beginner">Beginner</span>
+          <h3 class="room-title">XSS (Cross-Site Scripting)</h3>
+          <p class="room-desc">Reflected, Stored, and DOM-based scripting mechanics, session hijacking, and contextual output encoding.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +400 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+
+      <!-- 2. SQLi -->
+      <a href="sql-injection/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+          <h3 class="room-title">SQL Injection (SQLi)</h3>
+          <p class="room-desc">In-band, error-based, and blind SQL injection attack vectors, database extraction, and parameterized query defense.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +450 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+
+      <!-- 3. IDOR -->
+      <a href="idor/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-beginner">Beginner</span>
+          <h3 class="room-title">Insecure Direct Object Reference (IDOR)</h3>
+          <p class="room-desc">Broken object-level authorization (BOLA), parameter tampering, and server-side ownership verification.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +350 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+
+      <!-- 4. SSRF -->
+      <a href="ssrf/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+          <h3 class="room-title">Server-Side Request Forgery (SSRF)</h3>
+          <p class="room-desc">Exploiting backend webhooks to probe internal cloud metadata services (169.254.169.254) and internal networks.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +400 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+
+      <!-- 5. XXE -->
+      <a href="xxe/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+          <h3 class="room-title">XML External Entity (XXE)</h3>
+          <p class="room-desc">Abusing weak XML parsers to read local files (/etc/passwd) and perform blind out-of-band data exfiltration.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +400 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+
+      <!-- 6. File Upload -->
+      <a href="file-upload/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-intermediate">Intermediate</span>
+          <h3 class="room-title">Unrestricted File Upload</h3>
+          <p class="room-desc">Bypassing extension blacklists, MIME type checks, and achieving Remote Code Execution (RCE) via web shells.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +400 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+
+      <!-- 7. Security Misconfig -->
+      <a href="security-misconfiguration/index.html" class="room-card">
+        <div>
+          <span class="diff-pill diff-beginner">Beginner</span>
+          <h3 class="room-title">Security Misconfiguration</h3>
+          <p class="room-desc">Default credentials, debug endpoints, exposed stack traces, permissive CORS policies, and directory indexing.</p>
+        </div>
+        <div class="room-footer-row">
+          <span class="xp-badge">🏆 +400 XP</span>
+          <button class="btn-start-lab">Start Lab →</button>
+        </div>
+      </a>
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "pan-mobile-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vulnexa Live - standalone mobile PWA for PAN (Proactive Attack Navigator)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

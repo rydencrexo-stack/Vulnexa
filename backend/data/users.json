@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-02T15:07:12.651897Z",
+  "items": [
+    {
+      "id": "usr_11111111-1111-4111-8111-111111111111",
+      "createdAt": "2026-09-02T13:02:20.968473Z",
+      "updatedAt": "2026-09-02T14:57:20.968473Z",
+      "email": "admin@pan.local",
+      "fullName": "PAN Demo Administrator",
+      "passwordHash": "bcrypt-sha256$$2b$12$X9acXUC03zCXlifer19Q4en8iSa2cE/Bc12/L0BFMHxex5Knm5bYq",
+      "role": "admin",
+      "status": "active",
+      "organizationId": "org_11111111-1111-4111-8111-111111111111",
+      "workspaceIds": [
+        "wsp_11111111-1111-4111-8111-111111111111"
+      ],
+      "lastLoginAt": "2026-09-02T14:52:20.968473Z"
+    },
+    {
+      "id": "usr_22222222-2222-4222-8222-222222222222",
+      "createdAt": "2026-09-02T13:02:21.177929Z",
+      "updatedAt": "2026-09-02T15:07:12.642903Z",
+      "email": "analyst@pan.local",
+      "fullName": "PAN Demo Analyst",
+      "passwordHash": "bcrypt-sha256$$2b$12$1l1shWGxub1Ya89DUlPipesEI7YVmoHVJyuJrE52aJ5c/cqsX84Se",
+      "role": "analyst",
+      "status": "active",
+      "organizationId": "org_11111111-1111-4111-8111-111111111111",
+      "workspaceIds": [
+        "wsp_11111111-1111-4111-8111-111111111111"
+      ],
+      "lastLoginAt": "2026-09-02T15:07:12.642903Z"
+    }
+  ]
+}

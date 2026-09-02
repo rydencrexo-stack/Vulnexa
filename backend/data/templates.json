@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-02T15:02:21.322834Z",
+  "items": [
+    {
+      "id": "tpl_11111111-1111-4111-8111-111111111111",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "workspaceId": null,
+      "name": "Balanced web assessment",
+      "type": "scan_profile",
+      "description": "Safe recon, passive checks, and selected non-destructive specialist modules.",
+      "enabled": true,
+      "config": {
+        "modules": [
+          "subdomains",
+          "live_hosts",
+          "url_discovery",
+          "passive",
+          "xss",
+          "misconfigurations"
+        ]
+      },
+      "createdBy": "usr_11111111-1111-4111-8111-111111111111"
+    }
+  ]
+}

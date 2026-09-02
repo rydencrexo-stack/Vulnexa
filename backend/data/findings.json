@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-02T15:02:21.279855Z",
+  "items": [
+    {
+      "id": "fnd_11111111-1111-4111-8111-111111111111",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "workspaceId": "wsp_11111111-1111-4111-8111-111111111111",
+      "targetId": "tgt_11111111-1111-4111-8111-111111111111",
+      "scanId": "scn_11111111-1111-4111-8111-111111111111",
+      "assetId": "ast_11111111-1111-4111-8111-111111111111",
+      "endpointId": "ep_11111111-1111-4111-8111-111111111111",
+      "title": "Reflected Cross-Site Scripting",
+      "type": "xss",
+      "severity": "high",
+      "confidence": 96,
+      "verificationState": "confirmed",
+      "source": "mock_xss_scanner",
+      "method": "GET",
+      "parameter": "q",
+      "cwe": "CWE-79",
+      "owasp": "A03:2021 Injection",
+      "cvss": {
+        "version": "3.1",
+        "score": 8.2,
+        "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:H/A:N"
+      },
+      "description": "A deterministic demo fixture shows context-unsafe reflection in the stored sanitized response.",
+      "impact": "An attacker could execute script in a victim's browser in a real vulnerable deployment.",
+      "evidence": {
+        "requestId": "evidence_request_demo_01",
+        "responseId": "evidence_response_demo_01",
+        "references": [
+          "evidence_request_demo_01",
+          "evidence_response_demo_01"
+        ],
+        "screenshot": null,
+        "browserVerified": true,
+        "summary": "Development-only mock evidence."
+      },
+      "sanitizedRequest": "GET /search?q=%3Cdemo-marker%3E HTTP/1.1\nHost: demo.example.com",
+      "sanitizedResponse": "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<div>demo-marker</div>",
+      "reproductionSteps": [
+        "Use only the approved demo fixture.",
+        "Review the linked sanitized evidence."
+      ],
+      "aiAnalysis": null,
+      "remediation": "Apply context-aware output encoding and a restrictive Content Security Policy.",
+      "status": "open",
+      "assignedTo": "usr_22222222-2222-4222-8222-222222222222",
+      "timeline": [
+        {
+          "timestamp": "2026-09-02T14:37:21.178930Z",
+          "actorId": "usr_22222222-2222-4222-8222-222222222222",
+          "action": "finding.confirm",
+          "note": "Confirmed from deterministic fixture evidence."
+        }
+      ],
+      "retestHistory": []
+    },
+    {
+      "id": "fnd_22222222-2222-4222-8222-222222222222",
+      "createdAt": "2026-09-02T13:02:21.178930Z",
+      "updatedAt": "2026-09-02T14:57:21.178930Z",
+      "workspaceId": "wsp_11111111-1111-4111-8111-111111111111",
+      "targetId": "tgt_11111111-1111-4111-8111-111111111111",
+      "scanId": "scn_22222222-2222-4222-8222-222222222222",
+      "assetId": "ast_22222222-2222-4222-8222-222222222222",
+      "endpointId": "ep_22222222-2222-4222-8222-222222222222",
+      "title": "Potential object-level authorization gap",
+      "type": "idor",
+      "severity": "medium",
+      "confidence": 68,
+      "verificationState": "candidate",
+      "source": "mock_api_analyzer",
+      "method": "GET",
+      "parameter": "id",
+      "cwe": "CWE-639",
+      "owasp": "API1:2023 Broken Object Level Authorization",
+      "cvss": {
+        "version": "3.1",
+        "score": 6.5,
+        "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+      },
+      "description": "Response-shape differences suggest a candidate authorization issue; no cross-user request was executed.",
+      "impact": "A confirmed issue could expose another user's order data.",
+      "evidence": {
+        "requestId": "evidence_request_demo_02",
+        "responseId": "evidence_response_demo_02",
+        "references": [
+          "evidence_request_demo_02"
+        ],
+        "screenshot": null,
+        "browserVerified": false,
+        "summary": "Insufficient evidence for confirmation."
+      },
+      "sanitizedRequest": "GET /v1/orders/1001 HTTP/1.1\nHost: api.demo.example.com\nAuthorization: [REDACTED]",
+      "sanitizedResponse": "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"id\":1001,\"owner\":\"[REDACTED]\"}",
+      "reproductionSteps": [],
+      "aiAnalysis": null,
+      "remediation": "Enforce object ownership checks server-side for every object lookup.",
+      "status": "open",
+      "assignedTo": null,
+      "timeline": [],
+      "retestHistory": []
+    }
+  ]
+}

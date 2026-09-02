@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="theme-color" content="#070b09" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+  <link rel="icon" href="/icons/icon-192.png" />
+  <title>Vulnexa Live</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="login" class="screen login-screen">
+    <div class="login-card">
+      <div class="brand-mark">D</div>
+      <h1>Vulnexa Live</h1>
+      <p class="tagline">Security operations · mobile</p>
+      <form id="loginForm">
+        <label>Username<input id="user" type="text" value="admin" autocomplete="username" /></label>
+        <label>Password<input id="pass" type="password" value="admin" autocomplete="current-password" /></label>
+        <button type="submit" class="btn-primary">Sign in</button>
+      </form>
+      <p id="loginError" class="error hidden">Invalid credentials — use admin / admin</p>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="app-shell hidden">
+    <div id="backdrop" class="backdrop"></div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-head">
+        <div class="brand-mark sm">D</div>
+        <div><p class="brand-name">Vulnexa</p><p class="brand-sub">Live Ops</p></div>
+      </div>
+      <div class="user-card">
+        <div class="avatar">DA</div>
+        <div><strong id="uName">Delta Admin</strong><small id="uRole">Administrator</small></div>
+        <span class="status-dot ok"></span>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav">
+        <a data-view="home"><span class="nav-ico" data-ico="home"></span> Dashboard</a>
+        <a data-view="targets"><span class="nav-ico" data-ico="targets"></span> Targets</a>
+        <a data-view="scans"><span class="nav-ico" data-ico="scans"></span> Scans</a>
+        <a data-view="assets"><span class="nav-ico" data-ico="assets"></span> Assets</a>
+        <a data-view="findings"><span class="nav-ico" data-ico="findings"></span> Findings</a>
+        <a data-view="reports"><span class="nav-ico" data-ico="reports"></span> Reports</a>
+        <a data-view="ai"><span class="nav-ico" data-ico="ai"></span> AI Chat</a>
+        <a data-view="settings"><span class="nav-ico" data-ico="settings"></span> Settings</a>
+      </nav>
+      <button id="installSidebar" class="sidebar-install hidden"><span class="nav-ico" data-ico="download"></span> Install app</button>
+      <button id="logoutSidebar" class="sidebar-logout"><span class="nav-ico" data-ico="logout"></span> Sign out</button>
+    </aside>
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn" aria-label="Menu">☰</button>
+      <div class="tb-title"><p id="eyebrow" class="eyebrow">VULNEXA · LIVE</p><h1 id="pageTitle">Dashboard</h1></div>
+      <button id="installBtn" class="icon-btn hidden" aria-label="Install app"><span class="nav-ico" data-ico="download"></span></button>
+      <button id="notifBtn" class="icon-btn" aria-label="Notifications"><span class="nav-ico" data-ico="bell"></span><span class="badge">3</span></button>
+    </header>
+
+    <!-- VIEW -->
+    <main id="view" class="view"></main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav" id="bottomNav">
+      <a data-view="home"><span class="nav-ico" data-ico="home"></span>Home</a>
+      <a data-view="targets"><span class="nav-ico" data-ico="targets"></span>Targets</a>
+      <a data-view="scans"><span class="nav-ico" data-ico="scans"></span>Scans</a>
+      <a data-view="findings"><span class="nav-ico" data-ico="findings"></span>Findings</a>
+      <a data-view="ai"><span class="nav-ico" data-ico="ai"></span>AI</a>
+    </nav>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
