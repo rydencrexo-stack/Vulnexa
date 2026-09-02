@@ -161,3 +161,6 @@ Vulnexa is developed **strictly for educational, research, and authorized securi
 - The author is not responsible for misuse of this project.
 - By using Vulnexa, you agree to comply with applicable laws and regulations.
 
+## License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
