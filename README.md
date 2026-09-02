@@ -149,3 +149,15 @@ The generated JSON data is intentionally human-inspectable, but it is applicatio
 ## 🚀 Author:
 
 ## Atharva A. Deshmukh
+
+---
+
+## Educational Purpose & Responsible Use
+
+Vulnexa is developed **strictly for educational, research, and authorized security-testing purposes**.
+
+- Use Vulnexa only on systems you own or have explicit permission to test.
+- Do **not** use it to hack, attack, scan, or access someone else's systems without authorization.
+- The author is not responsible for misuse of this project.
+- By using Vulnexa, you agree to comply with applicable laws and regulations.
+
